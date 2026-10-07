@@ -11,6 +11,6 @@ if (!window.BIOMENTOR_API_URL) {
         window.BIOMENTOR_API_URL = 'http://localhost:8000/api';
     } else {
         // Replace with your actual Render backend URL after deploying to Render:
-        window.BIOMENTOR_API_URL = 'https://biomentor-ai-backend.onrender.com/api';
+        window.BIOMENTOR_API_URL = 'https://biomentor-ai-backend-qnik.onrender.com/api';
     }
 }
