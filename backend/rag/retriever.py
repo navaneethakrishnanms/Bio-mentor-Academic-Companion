@@ -1,18 +1,16 @@
 """BioMentor AI — RAG Retriever
 
 ChromaDB-based vector store for semantic search over ingested materials.
-Uses sentence-transformers for local, free embeddings.
+Uses Chroma's ONNX all-MiniLM-L6-v2 (no torch) for low-memory embeddings.
 """
 import chromadb
 from chromadb.utils import embedding_functions
-from config import CHROMA_DIR, EMBEDDING_MODEL, TOP_K
+from config import CHROMA_DIR, TOP_K
 
 
 # Initialize ChromaDB with persistent storage
 _client = chromadb.PersistentClient(path=CHROMA_DIR)
-_embedding_fn = embedding_functions.SentenceTransformerEmbeddingFunction(
-    model_name=EMBEDDING_MODEL
-)
+_embedding_fn = embedding_functions.ONNXMiniLM_L6_V2()
 
 # Get or create the collection
 collection = _client.get_or_create_collection(
