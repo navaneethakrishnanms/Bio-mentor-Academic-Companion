@@ -3,7 +3,7 @@
    Dynamic Course System with Adaptive Intelligence
    ═══════════════════════════════════════════════════════ */
 
-const API = 'http://localhost:8000/api';
+const API = window.BIOMENTOR_API_URL || 'http://localhost:8000/api';
 
 // ── State ────────────────────────────────────────────
 let currentUser = null;
@@ -681,9 +681,9 @@ function renderMasteryChart(courses) {
                 label: 'Mastery %',
                 data: courses.map(c => c.avg_mastery),
                 backgroundColor: courses.map(c =>
-                    c.avg_mastery >= 70 ? 'rgba(16,185,129,0.7)' :
-                        c.avg_mastery >= 40 ? 'rgba(245,158,11,0.7)' :
-                            'rgba(239,68,68,0.7)'
+                    c.avg_mastery >= 70 ? 'rgba(16,185,129,0.85)' :
+                        c.avg_mastery >= 40 ? 'rgba(245,158,11,0.85)' :
+                            'rgba(239,68,68,0.85)'
                 ),
                 borderRadius: 6,
                 borderSkipped: false,
@@ -694,8 +694,8 @@ function renderMasteryChart(courses) {
             maintainAspectRatio: false,
             plugins: { legend: { display: false } },
             scales: {
-                y: { max: 100, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
-                x: { grid: { display: false }, ticks: { color: '#94a3b8', maxRotation: 45 } },
+                y: { max: 100, grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { color: '#64748b' } },
+                x: { grid: { display: false }, ticks: { color: '#64748b', maxRotation: 45 } },
             },
         },
     });
@@ -707,7 +707,7 @@ function renderDomainChart(domains) {
 
     const labels = Object.keys(domains);
     const values = labels.map(d => domains[d].avg_mastery);
-    const colors = ['#00d4ff', '#7c3aed', '#10b981', '#f59e0b', '#ec4899'];
+    const colors = ['#2563eb', '#0284c7', '#10b981', '#f59e0b', '#7c3aed'];
 
     chartInstances.domain = new Chart(ctx, {
         type: 'doughnut',
@@ -716,7 +716,8 @@ function renderDomainChart(domains) {
             datasets: [{
                 data: values,
                 backgroundColor: colors.slice(0, labels.length),
-                borderWidth: 0,
+                borderWidth: 2,
+                borderColor: '#ffffff',
             }]
         },
         options: {
@@ -725,7 +726,7 @@ function renderDomainChart(domains) {
             plugins: {
                 legend: {
                     position: 'bottom',
-                    labels: { color: '#94a3b8', padding: 12, font: { size: 11 } },
+                    labels: { color: '#475569', padding: 12, font: { size: 11, weight: '600' } },
                 },
             },
         },
@@ -736,15 +737,15 @@ function renderHeatmap(courses) {
     const container = document.getElementById('mastery-heatmap');
     container.innerHTML = courses.map(c => {
         const score = c.avg_mastery || 0;
-        let bg, color;
-        if (score === 0) { bg = 'rgba(100,116,139,0.1)'; color = '#64748b'; }
-        else if (score < 30) { bg = 'rgba(239,68,68,0.2)'; color = '#ef4444'; }
-        else if (score < 50) { bg = 'rgba(245,158,11,0.2)'; color = '#f59e0b'; }
-        else if (score < 70) { bg = 'rgba(0,212,255,0.2)'; color = '#00d4ff'; }
-        else if (score < 90) { bg = 'rgba(16,185,129,0.2)'; color = '#10b981'; }
-        else { bg = 'rgba(124,58,237,0.2)'; color = '#7c3aed'; }
+        let bg, color, border;
+        if (score === 0) { bg = '#f8fafc'; color = '#64748b'; border = '#e2e8f0'; }
+        else if (score < 30) { bg = '#fee2e2'; color = '#b91c1c'; border = '#fca5a5'; }
+        else if (score < 50) { bg = '#fef3c7'; color = '#b45309'; border = '#fcd34d'; }
+        else if (score < 70) { bg = '#e0f2fe'; color = '#0284c7'; border = '#bae6fd'; }
+        else if (score < 90) { bg = '#dcfce7'; color = '#15803d'; border = '#86efac'; }
+        else { bg = '#ede9fe'; color = '#6d28d9'; border = '#c4b5fd'; }
 
-        return `<div class="heatmap-cell" style="background:${bg};color:${color};" onclick="openCourse(${c.id})">
+        return `<div class="heatmap-cell" style="background:${bg};color:${color};border-color:${border};" onclick="openCourse(${c.id})">
             ${c.title.length > 16 ? c.title.slice(0, 16) + '…' : c.title}<br><strong>${score}%</strong>
         </div>`;
     }).join('');

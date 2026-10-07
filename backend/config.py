@@ -19,7 +19,8 @@ LLM_MAX_TOKENS = 4096
 
 # ── Paths ────────────────────────────────────────────
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATA_DIR = os.path.join(BASE_DIR, "data")
+# DATA_DIR can be overridden by environment variable (e.g. Render persistent disk at /data)
+DATA_DIR = os.getenv("DATA_DIR", os.path.join(BASE_DIR, "data"))
 CHROMA_DIR = os.path.join(DATA_DIR, "chroma_db")
 UPLOADS_DIR = os.path.join(DATA_DIR, "uploads")
 DB_PATH = os.path.join(DATA_DIR, "biomentor.db")

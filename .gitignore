@@ -5,3 +5,16 @@
 __pycache__/
 *.py[cod]
 *$py.class
+
+# Data & Storage (do NOT commit DB, vector store, or uploads)
+backend/data/biomentor.db
+backend/data/chroma_db/
+backend/data/uploads/
+
+# Screenshots & local images
+*.png
+*.jpg
+*.jpeg
+
+# Vercel
+.vercel/
